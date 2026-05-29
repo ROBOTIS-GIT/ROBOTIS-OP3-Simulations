@@ -19,7 +19,9 @@ def generate_launch_description():
 
     # find op3 packages
     op3_description_path = os.path.join(get_package_share_directory('op3_description'))
+    op3_gazebo_ros2_path = os.path.join(get_package_share_directory('op3_gazebo_ros2'))
     xacro_file = os.path.join(op3_description_path, 'urdf', 'robotis_op3.urdf.xacro')
+    gazebo_controllers_param_file = os.path.join(op3_gazebo_ros2_path, 'config', 'robotis_op3_gazebo_config.yaml')
 
     op3_gazebo_path = os.path.join(get_package_share_directory('op3_gazebo_ros2'))
 
@@ -50,7 +52,10 @@ def generate_launch_description():
                 ]
              )
 
-    doc = xacro.process_file(xacro_file, mappings={'use_sim' : 'true'})
+    doc = xacro.process_file(xacro_file, mappings={
+        'use_sim' : 'true',
+        'gazebo_controllers_param_file': gazebo_controllers_param_file,
+    })
     robot_desc = doc.toprettyxml(indent='  ')
 
     params = {'robot_description': robot_desc}
